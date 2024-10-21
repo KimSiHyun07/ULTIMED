@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qb</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .illustration-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background-image: url('abdomen-illustration.png'); /* 배 일러스트 경로 */
+            background-size: cover;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        .grid div {
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .grid div.selected {
+            background-color: rgba(255, 255, 255, 0.5); /* 선택된 칸 */
+        }
+
+        .next-button {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>배의 아픈 부위를 선택하세요</h1>
+
+    <div class="illustration-container">
+        <div class="grid">
+            <!-- 3x3 그리드, 각 칸에 숫자 부여 -->
+            <div data-value="1" onclick="toggleSelect(this)"></div>
+            <div data-value="2" onclick="toggleSelect(this)"></div>
+            <div data-value="3" onclick="toggleSelect(this)"></div>
+            <div data-value="4" onclick="toggleSelect(this)"></div>
+            <div data-value="5" onclick="toggleSelect(this)"></div>
+            <div data-value="6" onclick="toggleSelect(this)"></div>
+            <div data-value="7" onclick="toggleSelect(this)"></div>
+            <div data-value="8" onclick="toggleSelect(this)"></div>
+            <div data-value="9" onclick="toggleSelect(this)"></div>
+        </div>
+    </div>
+
+    <button class="next-button" onclick="goToNextPage()">다음 -></button>
+
+    <script>
+        let selectedAreas = [];
+
+        function toggleSelect(element) {
+            const value = element.getAttribute('data-value');
+            // 이미 선택된 경우 배열에서 제거
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                selectedAreas = selectedAreas.filter(area => area !== value);
+            } else {
+                // 선택되지 않은 경우 배열에 추가
+                element.classList.add('selected');
+                selectedAreas.push(value);
+            }
+
+            // 선택된 칸이 있으면 '다음' 버튼 표시
+            if (selectedAreas.length > 0) {
+                document.querySelector('.next-button').style.display = 'block';
+            } else {
+                document.querySelector('.next-button').style.display = 'none';
+            }
+        }
+
+        function goToNextPage() {
+            const bodyDetail = selectedAreas.join(','); // 선택한 칸을 콤마로 연결
+            // '다음' 버튼을 눌렀을 때 q3.html로 이동하면서 body_detail 전달
+            window.location.href = 'q3.html?body_detail=' + encodeURIComponent(bodyDetail);
+        }
+    </script>
+</body>
+</html>
